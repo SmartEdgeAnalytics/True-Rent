@@ -1,33 +1,597 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Trurent</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            padding: 50px;
-            background: #f5f5f5;
-        }
-        h1 { color: #1e3a5f; }
-        .btn {
-            background: #1e3a5f;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin: 10px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Trurent · Nigeria's Direct Rental Hub</title>
+  <!-- Font Awesome 6 (free icons) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts: clean modern sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8fafc;
+      color: #0f172a;
+      line-height: 1.5;
+    }
+
+    /* container utility */
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      border-radius: 2rem;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+      background: none;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: #1e3a5f;
+      color: white;
+    }
+    .btn-primary:hover {
+      background: #0f2b46;
+      transform: translateY(-2px);
+    }
+    .btn-outline {
+      border: 1.5px solid #1e3a5f;
+      color: #1e3a5f;
+      background: white;
+    }
+    .btn-outline:hover {
+      background: #eef2ff;
+    }
+    .btn-sm {
+      padding: 0.4rem 1rem;
+      font-size: 0.8rem;
+    }
+
+    /* navbar */
+    .navbar {
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      padding: 1rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .logo {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #1e3a5f;
+      letter-spacing: -0.5px;
+    }
+    .logo span {
+      color: #e67e22;
+    }
+    .nav-links {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* hero */
+    .hero {
+      padding: 3rem 0 2.5rem;
+      background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+    }
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+    }
+    .hero p {
+      font-size: 1.1rem;
+      color: #334155;
+      margin: 1rem 0 1.8rem;
+    }
+    .cta-group {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* cards */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.8rem;
+      margin: 2rem 0;
+    }
+    .property-card {
+      background: white;
+      border-radius: 1.2rem;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+      transition: transform 0.2s;
+    }
+    .property-card:hover {
+      transform: translateY(-5px);
+    }
+    .card-img {
+      height: 180px;
+      background: #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #475569;
+      font-size: 2rem;
+    }
+    .card-content {
+      padding: 1.2rem;
+    }
+    .price {
+      font-weight: 800;
+      font-size: 1.3rem;
+      color: #1e3a5f;
+    }
+    .location {
+      color: #e67e22;
+      font-size: 0.85rem;
+      margin: 0.3rem 0;
+    }
+    .rating {
+      color: #fbbf24;
+      margin: 0.5rem 0;
+      font-size: 0.9rem;
+    }
+    .btn-link {
+      background: none;
+      border: none;
+      color: #1e3a5f;
+      font-weight: 600;
+      margin-top: 0.5rem;
+      cursor: pointer;
+    }
+
+    /* modal */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .modal-card {
+      background: white;
+      max-width: 500px;
+      width: 90%;
+      border-radius: 1.5rem;
+      padding: 1.8rem;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 0.7rem;
+      border-radius: 1rem;
+      border: 1px solid #cbd5e1;
+      font-family: inherit;
+    }
+    .flex-between {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .badge {
+      background: #e2e8f0;
+      padding: 0.2rem 0.7rem;
+      border-radius: 2rem;
+      font-size: 0.7rem;
+    }
+
+    /* admin panel quick */
+    .admin-section {
+      background: #fff7ed;
+      border-radius: 1rem;
+      padding: 1.5rem;
+      margin: 2rem 0;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      color: #475569;
+      border-top: 1px solid #e2e8f0;
+      margin-top: 3rem;
+    }
+    @media (max-width: 640px) {
+      .container { padding: 0 1rem; }
+      .hero h1 { font-size: 1.8rem; }
+    }
+  </style>
 </head>
 <body>
-    <h1>🏠 Trurent</h1>
-    <p>Nigeria's Direct Rental Hub</p>
-    <button class="btn" onclick="alert('Coming soon!')">Browse Properties</button>
-    <button class="btn" onclick="alert('Coming soon!')">Post Property</button>
-    <p style="margin-top: 50px;">Website is live! Full version coming soon.</p>
+
+<div class="navbar">
+  <div class="container nav-flex">
+    <div class="logo">Trurent<span>.</span></div>
+    <div class="nav-links" id="navLinks">
+      <button class="btn btn-outline btn-sm" id="loginBtn"><i class="fas fa-sign-in-alt"></i> Login</button>
+      <button class="btn btn-primary btn-sm" id="signupBtn"><i class="fas fa-user-plus"></i> Sign up</button>
+      <span id="userGreeting" style="font-weight:500; display:none;"></span>
+      <button id="logoutBtn" style="display:none;" class="btn btn-outline btn-sm">Logout</button>
+    </div>
+  </div>
+</div>
+
+<main id="appRoot">
+  <!-- dynamic content -->
+</main>
+
+<footer>
+  <p>Trurent — Connecting Nigerian landlords & tenants directly. © 2025 MVP</p>
+</footer>
+
+<!-- MODALS -->
+<div id="authModal" class="modal">
+  <div class="modal-card">
+    <div class="flex-between"><h3 id="authTitle">Login</h3><button id="closeAuth">&times;</button></div>
+    <form id="authForm">
+      <div class="form-group"><input type="text" id="authName" placeholder="Full name" required></div>
+      <div class="form-group"><input type="email" id="authEmail" placeholder="Email" required></div>
+      <div class="form-group"><input type="password" id="authPassword" placeholder="Password" required></div>
+      <div class="form-group"><select id="authRole"><option value="tenant">Tenant</option><option value="landlord">Landlord</option></select></div>
+      <button type="submit" class="btn btn-primary" style="width:100%">Continue</button>
+      <p id="authToggleMsg" style="margin-top:1rem; text-align:center; cursor:pointer; color:#1e3a5f;">Don't have an account? Sign up</p>
+    </form>
+  </div>
+</div>
+
+<!-- Create Listing Modal (landlord only) -->
+<div id="listingModal" class="modal">
+  <div class="modal-card">
+    <div class="flex-between"><h3>🏠 Post New Property</h3><button id="closeListing">&times;</button></div>
+    <form id="listingForm">
+      <div class="form-group"><input type="text" id="propTitle" placeholder="Title (e.g., 3-bed flat in Lekki)" required></div>
+      <div class="form-group"><textarea id="propDesc" rows="2" placeholder="Description"></textarea></div>
+      <div class="form-group"><input type="text" id="propLocation" placeholder="Location (e.g., Lagos, Abuja)" required></div>
+      <div class="form-group"><input type="number" id="propPrice" placeholder="Price (₦ per month)" required></div>
+      <div class="form-group"><input type="text" id="propImage" placeholder="Image URL (optional)"></div>
+      <button type="submit" class="btn btn-primary">Publish Listing</button>
+    </form>
+  </div>
+</div>
+
+<!-- Chat Simulator Modal -->
+<div id="chatModal" class="modal">
+  <div class="modal-card">
+    <div class="flex-between"><h3>💬 Chat with Landlord</h3><button id="closeChat">&times;</button></div>
+    <div id="chatMessages" style="height:200px; overflow-y:auto; background:#f1f5f9; padding:0.5rem; border-radius:1rem; margin-bottom:1rem;"></div>
+    <div class="flex-between" style="gap:0.5rem;"><input type="text" id="chatInput" placeholder="Type message..." style="flex:1"><button id="sendChatBtn" class="btn btn-primary btn-sm">Send</button></div>
+    <p class="badge" style="margin-top:0.5rem;">💡 Simulated chat (demo)</p>
+  </div>
+</div>
+
+<!-- Boost / Ad modal placeholder -->
+<div id="boostModal" class="modal">
+  <div class="modal-card">
+    <h3>🚀 Boost your listing</h3>
+    <p>Get more visibility! Click below to start promotion (payment link placeholder).</p>
+    <button class="btn btn-primary" id="fakePaymentBtn">Proceed to Payment (Demo)</button>
+    <button id="closeBoost" style="margin-top:1rem; width:100%;" class="btn-outline btn">Cancel</button>
+  </div>
+</div>
+
+<script>
+  // ---------- STORAGE KEYS (LocalStorage as simple DB) ----------
+  let users = JSON.parse(localStorage.getItem('trurent_users')) || [];
+  let listings = JSON.parse(localStorage.getItem('trurent_listings')) || [];
+  let messages = JSON.parse(localStorage.getItem('trurent_messages')) || []; // { fromUserId, toUserId, listingId, text, timestamp }
+  let reviews = JSON.parse(localStorage.getItem('trurent_reviews')) || []; // { listingId, tenantId, rating, comment, landlordId }
+  let boosts = JSON.parse(localStorage.getItem('trurent_boosts')) || []; // listingIds that are boosted
+
+  let currentUser = null;
+
+  // helper: save to LS
+  function saveData() {
+    localStorage.setItem('trurent_users', JSON.stringify(users));
+    localStorage.setItem('trurent_listings', JSON.stringify(listings));
+    localStorage.setItem('trurent_messages', JSON.stringify(messages));
+    localStorage.setItem('trurent_reviews', JSON.stringify(reviews));
+    localStorage.setItem('trurent_boosts', JSON.stringify(boosts));
+  }
+
+  // seeding sample data if empty
+  function seedSampleData() {
+    if(users.length === 0) {
+      users.push({ id: 1, name: "Chidi Landlord", email: "landlord@trurent.com", password: "pass123", role: "landlord" });
+      users.push({ id: 2, name: "Ada Tenant", email: "tenant@trurent.com", password: "pass123", role: "tenant" });
+      if(listings.length === 0) {
+        listings.push({ id: 101, landlordId: 1, title: "Spacious 2-bedroom in Lekki Phase 1", description: "Fully furnished, 24hrs light", location: "Lekki, Lagos", price: 850000, imageUrl: "https://picsum.photos/id/106/300/180", boosted: false, createdAt: Date.now() });
+        listings.push({ id: 102, landlordId: 1, title: "Cozy studio in Abuja CBD", description: "Close to Wuse market", location: "Abuja", price: 400000, imageUrl: "https://picsum.photos/id/104/300/180", boosted: false, createdAt: Date.now() });
+      }
+    }
+    if(listings.length === 0 && users.length) {
+      listings.push({ id: 103, landlordId: 1, title: "Modern 3-bedroom in Ikeja GRA", description: "Parking space, security", location: "Ikeja, Lagos", price: 1200000, imageUrl: "https://picsum.photos/id/108/300/180", boosted: false, createdAt: Date.now() });
+    }
+    saveData();
+  }
+  seedSampleData();
+
+  // helpers: get landlord name by id
+  function getUserById(id) { return users.find(u => u.id === id); }
+  function getAvgRating(listingId) {
+    const listReviews = reviews.filter(r => r.listingId === listingId);
+    if(!listReviews.length) return null;
+    const avg = listReviews.reduce((acc, r) => acc + r.rating, 0) / listReviews.length;
+    return avg.toFixed(1);
+  }
+
+  // ---------- RENDER LANDING + PROPERTIES ----------
+  function renderApp() {
+    const container = document.getElementById('appRoot');
+    const isLoggedIn = !!currentUser;
+    const isLandlord = currentUser?.role === 'landlord';
+    const isAdmin = currentUser?.email === 'admin@trurent.com'; // simple admin access
+
+    // build property listings grid
+    let listingsHtml = `<div class="container"><div class="flex-between" style="flex-wrap:wrap; gap:1rem; margin: 1rem 0;"><h2>🏘️ Browse Properties</h2>
+    <div style="display:flex; gap:0.5rem;"><input type="text" id="searchLocation" placeholder="Search by location" style="width:180px;"><input type="number" id="maxPrice" placeholder="Max price (₦)" style="width:150px;"><button id="filterBtn" class="btn btn-primary btn-sm">Filter</button><button id="resetFilter" class="btn-outline btn-sm btn">Reset</button></div></div>`;
+
+    let filteredListings = [...listings];
+    // filter client side
+    function applyFilters() {
+      const locInput = document.getElementById('searchLocation')?.value.toLowerCase();
+      const priceVal = document.getElementById('maxPrice')?.value;
+      let filtered = listings.filter(l => {
+        if(locInput && !l.location.toLowerCase().includes(locInput)) return false;
+        if(priceVal && !isNaN(priceVal) && l.price > Number(priceVal)) return false;
+        return true;
+      });
+      renderPropertyGrid(filtered);
+    }
+    function renderPropertyGrid(properties) {
+      const gridContainer = document.getElementById('propertyGrid');
+      if(!gridContainer) return;
+      if(properties.length === 0) { gridContainer.innerHTML = '<p>No properties match your filters.</p>'; return; }
+      gridContainer.innerHTML = properties.map(prop => {
+        const landlord = getUserById(prop.landlordId);
+        const landlordName = landlord?.name || 'Landlord';
+        const avgRating = getAvgRating(prop.id);
+        const starHtml = avgRating ? `⭐ ${avgRating} (${reviews.filter(r=>r.listingId===prop.id).length})` : '⭐ No reviews yet';
+        const boostedBadge = boosts.includes(prop.id) ? '<span class="badge" style="background:#f59e0b;">🔥 Boosted</span>' : '';
+        return `<div class="property-card">
+          <div class="card-img" style="background-image:url('${prop.imageUrl || 'https://picsum.photos/id/20/300/180'}'); background-size:cover; background-position:center;"></div>
+          <div class="card-content">
+            <div class="flex-between"><h3>${prop.title}</h3>${boostedBadge}</div>
+            <div class="price">₦${prop.price.toLocaleString()}/mo</div>
+            <div class="location"><i class="fas fa-map-marker-alt"></i> ${prop.location}</div>
+            <div class="rating">${starHtml}</div>
+            <p class="description" style="font-size:0.85rem; margin:0.5rem 0;">${prop.description.substring(0,80)}</p>
+            <div class="flex-between" style="margin-top:0.8rem;">
+              <button class="btn-link" data-listing='${JSON.stringify(prop)}' data-landlord-id="${prop.landlordId}" data-action="chat"><i class="fas fa-comment"></i> Contact</button>
+              ${isLoggedIn && currentUser.role === 'tenant' ? `<button class="btn-link" data-listing-id="${prop.id}" data-action="rate">⭐ Rate</button>` : ''}
+              ${isLoggedIn && currentUser.role === 'landlord' && currentUser.id === prop.landlordId ? `<button class="btn-link" data-listing-id="${prop.id}" data-action="boost">🚀 Boost (ads)</button>` : ''}
+            </div>
+          </div>
+        </div>`;
+      }).join('');
+      // attach dynamic events
+      document.querySelectorAll('[data-action="chat"]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const listingData = JSON.parse(btn.getAttribute('data-listing'));
+          openChat(listingData, btn.getAttribute('data-landlord-id'));
+        });
+      });
+      document.querySelectorAll('[data-action="rate"]').forEach(btn => {
+        btn.addEventListener('click', () => openRating(Number(btn.getAttribute('data-listing-id'))));
+      });
+      document.querySelectorAll('[data-action="boost"]').forEach(btn => {
+        btn.addEventListener('click', () => openBoost(Number(btn.getAttribute('data-listing-id'))));
+      });
+    }
+
+    listingsHtml += `<div id="propertyGrid" class="grid-3"></div></div>`;
+    // admin panel (simple)
+    let adminHtml = '';
+    if(isAdmin) {
+      adminHtml = `<div class="container admin-section"><h3>🛠️ Admin Panel (MVP)</h3><div class="flex-between" style="flex-wrap:wrap;"><div><strong>Total Listings:</strong> ${listings.length} | <strong>Users:</strong> ${users.length}</div>
+      <button id="adminMarkBoostBtn" class="btn btn-primary btn-sm">Manually Boost Listing (enter ID)</button>
+      <button id="adminViewAllBtn" class="btn-outline btn-sm btn">View All Listings Data</button>
+      </div><div id="adminLog" style="margin-top:1rem; font-size:0.8rem;"></div></div>`;
+    }
+
+    // landlord post button
+    let landlordAction = '';
+    if(isLoggedIn && isLandlord) {
+      landlordAction = `<div class="container" style="margin-bottom:1rem;"><button id="createListingBtn" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Post Property</button></div>`;
+    }
+
+    container.innerHTML = `<div class="hero"><div class="container"><h1>Rent smarter in Nigeria 🇳🇬</h1><p>Trurent connects landlords and tenants directly — no middlemen, fair prices, honest reviews.</p><div class="cta-group"><button id="heroBrowseBtn" class="btn btn-primary">Browse Properties</button>${!isLoggedIn ? '<button id="heroPostBtn" class="btn btn-outline">Post Property →</button>' : (isLandlord ? '<button id="heroPostLandlordBtn" class="btn btn-outline">Post Property</button>' : '')}</div></div></div>${landlordAction}${listingsHtml}${adminHtml}`;
+
+    // after rendering, attach filter logic and property grid
+    const propGridDiv = document.getElementById('propertyGrid');
+    if(propGridDiv) renderPropertyGrid(filteredListings);
+    const filterBtn = document.getElementById('filterBtn');
+    const resetBtn = document.getElementById('resetFilter');
+    if(filterBtn) filterBtn.addEventListener('click', () => applyFilters());
+    if(resetBtn) resetBtn.addEventListener('click', () => { document.getElementById('searchLocation').value=''; document.getElementById('maxPrice').value=''; applyFilters(); });
+    document.getElementById('heroBrowseBtn')?.addEventListener('click', () => document.querySelector('.grid-3')?.scrollIntoView({behavior:'smooth'}));
+    if(document.getElementById('heroPostBtn') || document.getElementById('heroPostLandlordBtn')) {
+      const postBtn = document.getElementById('heroPostBtn') || document.getElementById('heroPostLandlordBtn');
+      if(postBtn && isLoggedIn && isLandlord) postBtn.addEventListener('click', () => document.getElementById('listingModal').style.display='flex');
+      else if(postBtn && !isLoggedIn) postBtn.addEventListener('click', () => alert('Please login as landlord to post property.'));
+    }
+    if(document.getElementById('createListingBtn')) document.getElementById('createListingBtn').addEventListener('click', () => document.getElementById('listingModal').style.display='flex');
+    if(isAdmin) {
+      document.getElementById('adminMarkBoostBtn')?.addEventListener('click', () => {
+        let id = prompt('Enter listing ID to boost (manual):');
+        if(id && !boosts.includes(Number(id))) { boosts.push(Number(id)); saveData(); renderApp(); alert('Listing boosted manually'); }
+        else if(boosts.includes(Number(id))) alert('Already boosted');
+      });
+      document.getElementById('adminViewAllBtn')?.addEventListener('click', () => {
+        let str = listings.map(l=>`${l.id}: ${l.title} (boosted:${boosts.includes(l.id)})`).join('\n');
+        alert('All listings:\n'+str);
+      });
+    }
+  }
+
+  // chat simulation
+  let activeChatLandlordId = null, activeListing = null;
+  function openChat(listing, landlordId) {
+    if(!currentUser) { alert('Please login to message landlord.'); return; }
+    activeChatLandlordId = Number(landlordId);
+    activeListing = listing;
+    const modal = document.getElementById('chatModal');
+    const msgContainer = document.getElementById('chatMessages');
+    // load previous messages between current user and landlord for this listing
+    const relevant = messages.filter(m => ((m.fromUserId === currentUser.id && m.toUserId === activeChatLandlordId) || (m.fromUserId === activeChatLandlordId && m.toUserId === currentUser.id)) && m.listingId === listing.id);
+    msgContainer.innerHTML = relevant.map(m => `<div style="margin:0.3rem 0;"><strong>${getUserById(m.fromUserId)?.name}:</strong> ${m.text}</div>`).join('');
+    if(msgContainer.innerHTML === '') msgContainer.innerHTML = '<em>Start conversation about this property</em>';
+    modal.style.display = 'flex';
+    document.getElementById('sendChatBtn').onclick = () => {
+      const input = document.getElementById('chatInput');
+      if(!input.value.trim()) return;
+      const newMsg = { fromUserId: currentUser.id, toUserId: activeChatLandlordId, listingId: listing.id, text: input.value, timestamp: Date.now() };
+      messages.push(newMsg);
+      saveData();
+      openChat(activeListing, activeChatLandlordId); // re-render chat
+      input.value = '';
+    };
+  }
+  function openRating(listingId) {
+    if(!currentUser) return alert('Login to rate');
+    const ratingVal = prompt('Rate this property (1-5 stars):', '5');
+    if(ratingVal && !isNaN(ratingVal) && ratingVal>=1 && ratingVal<=5) {
+      const comment = prompt('Optional comment:');
+      const listing = listings.find(l=>l.id===listingId);
+      if(listing) {
+        reviews.push({ listingId, tenantId: currentUser.id, rating: Number(ratingVal), comment: comment||'', landlordId: listing.landlordId });
+        saveData();
+        renderApp();
+        alert('Thank you for rating!');
+      }
+    } else alert('Please enter number 1-5');
+  }
+  function openBoost(listingId) {
+    if(!currentUser) return;
+    const boostModal = document.getElementById('boostModal');
+    boostModal.style.display = 'flex';
+    document.getElementById('fakePaymentBtn').onclick = () => {
+      alert('🔗 [PLACEHOLDER] Payment link for ad boost. Listing would become boosted after payment confirmation.');
+      if(!boosts.includes(listingId)) boosts.push(listingId);
+      saveData();
+      renderApp();
+      boostModal.style.display = 'none';
+    };
+    document.getElementById('closeBoost').onclick = () => boostModal.style.display = 'none';
+  }
+
+  // Auth modal logic
+  let authMode = 'login';
+  function showAuthModal(mode) {
+    authMode = mode;
+    const modal = document.getElementById('authModal');
+    document.getElementById('authTitle').innerText = mode === 'login' ? 'Welcome back' : 'Create account';
+    const toggleMsg = document.getElementById('authToggleMsg');
+    toggleMsg.innerText = mode === 'login' ? "Don't have an account? Sign up" : "Already have an account? Login";
+    modal.style.display = 'flex';
+  }
+  document.getElementById('loginBtn').onclick = () => showAuthModal('login');
+  document.getElementById('signupBtn').onclick = () => showAuthModal('signup');
+  document.getElementById('closeAuth').onclick = () => document.getElementById('authModal').style.display='none';
+  document.getElementById('closeListing').onclick = () => document.getElementById('listingModal').style.display='none';
+  document.getElementById('closeChat').onclick = () => document.getElementById('chatModal').style.display='none';
+  document.getElementById('authForm').onsubmit = (e) => {
+    e.preventDefault();
+    const name = document.getElementById('authName').value;
+    const email = document.getElementById('authEmail').value;
+    const pwd = document.getElementById('authPassword').value;
+    const role = document.getElementById('authRole').value;
+    if(authMode === 'login') {
+      const user = users.find(u => u.email === email && u.password === pwd);
+      if(user) { currentUser = user; updateUIafterAuth(); } else alert('Invalid credentials');
+    } else {
+      if(users.find(u=>u.email===email)) { alert('Email already exists'); return; }
+      const newId = users.length+1;
+      const newUser = { id: newId, name, email, password: pwd, role };
+      users.push(newUser);
+      saveData();
+      currentUser = newUser;
+      updateUIafterAuth();
+    }
+    document.getElementById('authModal').style.display='none';
+  };
+  document.getElementById('authToggleMsg').onclick = () => {
+    authMode = authMode === 'login' ? 'signup' : 'login';
+    showAuthModal(authMode);
+  };
+  function updateUIafterAuth() {
+    const greetingSpan = document.getElementById('userGreeting');
+    const logoutBtn = document.getElementById('logoutBtn');
+    const loginBtn = document.getElementById('loginBtn');
+    const signupBtn = document.getElementById('signupBtn');
+    if(currentUser) {
+      greetingSpan.innerText = `👋 ${currentUser.name} (${currentUser.role})`;
+      greetingSpan.style.display = 'inline';
+      logoutBtn.style.display = 'inline-block';
+      loginBtn.style.display = 'none';
+      signupBtn.style.display = 'none';
+    } else {
+      greetingSpan.style.display = 'none';
+      logoutBtn.style.display = 'none';
+      loginBtn.style.display = 'inline-block';
+      signupBtn.style.display = 'inline-block';
+    }
+    renderApp();
+  }
+  document.getElementById('logoutBtn').onclick = () => { currentUser = null; updateUIafterAuth(); };
+  // Create Listing
+  document.getElementById('listingForm').onsubmit = (e) => {
+    e.preventDefault();
+    if(!currentUser || currentUser.role !== 'landlord') { alert('Only landlords can post'); return; }
+    const newListing = {
+      id: Date.now(),
+      landlordId: currentUser.id,
+      title: document.getElementById('propTitle').value,
+      description: document.getElementById('propDesc').value,
+      location: document.getElementById('propLocation').value,
+      price: Number(document.getElementById('propPrice').value),
+      imageUrl: document.getElementById('propImage').value || null,
+      boosted: false,
+      createdAt: Date.now()
+    };
+    listings.push(newListing);
+    saveData();
+    document.getElementById('listingModal').style.display='none';
+    renderApp();
+    alert('Property posted!');
+  };
+  // initial render
+  updateUIafterAuth();
+</script>
 </body>
-</html>
+    </html>
